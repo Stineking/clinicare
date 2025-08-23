@@ -14,7 +14,7 @@ import { toast } from "sonner";
 export default function PatientOnboard() {
   useMetaArgs({
     title: "Patient onboard - Clinicare",
-    description: "Set up your Clinicare account",
+    description: "Complete your Clinicare account set-up",
     keywords: "Clinicare, account set-up, data, information, account",
   });
 

@@ -21,6 +21,28 @@ const patientService = {
     await user.save();
     return patient;
   },
+
+  getPatient: async (userId, next) => {
+    const patient = await Patient.findOne({ userId: userId.toString() });
+    if (!patient) {
+      return next(notFoundResponse("No patient found"));
+    }
+    return patient;
+  },
+
+  updatePatient: async (patientId, patientData, next) => {
+    const patient = await Patient.findById(patientId);
+    if (!patient) {
+      return next(notFoundResponse("No patient found"));
+    }
+    for (const [key, value] of Object.entries(patientData)) {
+      if (value) {
+        patient[key] = value;
+      }
+    }
+    const updatedPatient = await patient.save();
+    return updatedPatient;
+  },
 };
 
 export default patientService;

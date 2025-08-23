@@ -48,7 +48,7 @@ export default function Logout() {
       <Modal
         id="logoutModal"
         isOpen={isOpen}
-        classname="bg-white p-4 rounded-xl shadow w-[90%] max-w-[400px] mx-auto"
+        className="bg-white p-4 rounded-xl shadow w-[90%] max-w-[400px] mx-auto"
       >
         <div className="flex flex-col items-center gap-2 w-full">
           <RiLogoutCircleRLine size={40} className="text-red-500" />
@@ -56,7 +56,7 @@ export default function Logout() {
           <p className="text-center">
             Are you sure you want to logout from your account?
           </p>
-          <div className="mt-4 mb-2 gap-2">
+          <div className="mt-4 mb-2 flex gap-3">
             <button
               type="button"
               className="btn btn-outline w-[150px] border-[0.2px] border-gray-500"

@@ -9,6 +9,7 @@ import {
   RiStethoscopeFill,
   RiUserLine,
 } from "@remixicon/react";
+
 import dayjs from "dayjs";
 
 export const bloodGroup = {
@@ -92,5 +93,53 @@ export const settingsLink = [
     id: "health",
     href: "/dashboard/settings/health",
     name: "Health Record",
+  },
+];
+
+export const data = [
+  {
+    id: 1,
+    fullname: "Sussana",
+    email: "sussanobi1999@gmail.com",
+    role: "Patient",
+    phone: "N/A",
+    joined: "22/07/2025",
+    avatar: "",
+  },
+  {
+    id: 2,
+    fullname: "Joseph Gift",
+    email: "jgifted13@gmail.com",
+    role: "Patient",
+    phone: "N/A",
+    joined: "21/07/2025",
+    avatar: "",
+  },
+  {
+    id: 3,
+    fullname: "Eric Fullstack",
+    email: "cobimbachu@gmail.com",
+    role: "Patient",
+    phone: "0123456789",
+    joined: "11/07/2025",
+    avatar: "",
+  },
+  {
+    id: 4,
+    fullname: "Mubarak Tech",
+    email: "charlesmutob@gmail.com",
+    role: "Doctor",
+    phone: "N/A",
+    joined: "11/07/2025",
+    avatar: "",
+  },
+  {
+    id: 5,
+    fullname: "Dizzy Gilepsy",
+    email: "ceenobi@icloud.com",
+    role: "Admin",
+    phone: "09061987800",
+    joined: "20/06/2025",
+    avatar: "",
   },
 ];

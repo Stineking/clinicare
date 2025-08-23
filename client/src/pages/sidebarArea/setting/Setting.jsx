@@ -16,8 +16,8 @@ export default function Setting() {
 
   //redirect to account settings page
   useEffect(() => {
-    location.pathname === "dashboard/settings" &&
-      navigate("dashboard/settings/account");
+    location.pathname === "/dashboard/settings" &&
+      navigate("/dashboard/settings/account");
   }, [location.pathname, navigate]);
 
   return (
@@ -38,6 +38,7 @@ export default function Setting() {
           <button
             type="submit"
             className="btn bg-blue-500 text-white font-bold border border-gray-300 p-2 rounded-md cursor-pointer w-[140px]"
+            form={location.pathname}
           >
             Save
           </button>

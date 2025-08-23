@@ -13,11 +13,10 @@ import { toast } from "sonner";
 export default function Login() {
   useMetaArgs({
     title: "Reset Password - Clinicare",
-    description: "Reet Your Clinicare account password",
-    keywords: "Clinicare, reset-password-account, acc-reset, account",
+    description: "Reset Your Clinicare account password",
+    keywords: "Clinicare, reset-password-account, account-reset, account",
   });
 
-  const [isVisible, setIsVisible] = useState(false);
   const [error, setError] = useState(null);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -26,8 +25,14 @@ export default function Login() {
   const token = searchParams.get("token");
   // console.log({ email, token });
 
+  const [isVisible, setIsVisible] = useState(false);
+  const [confirmVisible, setConfirmVisible] = useState(false);
+
   const togglePassword = () => {
     setIsVisible((prev) => !prev);
+  };
+  const toggleConfirmPassword = () => {
+    setConfirmVisible((prev) => !prev);
   };
 
   const mutation = useMutation({
@@ -101,7 +106,7 @@ export default function Login() {
             <fieldset className="fieldset relative">
               <legend className="fieldset-legend">Confirm Password</legend>
               <input
-                type={isVisible ? "text" : "password"}
+                type={confirmVisible ? "text" : "password"}
                 className="input"
                 placeholder="Confirm Password"
                 {...register("confirmPassword")}
@@ -109,9 +114,9 @@ export default function Login() {
               <button
                 type="button"
                 className="absolute font-semibold cursor-pointer top-1 left-66 inset-0"
-                onClick={togglePassword}
+                onClick={toggleConfirmPassword}
               >
-                {isVisible ? "Hide" : "Show"}
+                {confirmVisible ? "Hide" : "Show"}
               </button>
             </fieldset>
             {errors.password?.message && (

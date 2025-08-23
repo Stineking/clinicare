@@ -8,3 +8,15 @@ export const registerPatient = async ({ formData, accessToken }) => {
     headers(accessToken)
   );
 };
+
+export const getPatient = async (accessToken) => {
+  return await axiosInstance.get("/patients/me", headers(accessToken));
+};
+
+export const updatePatient = async ({ patientId, formData, accessToken }) => {
+  return await axiosInstance.patch(
+    `/patients/${patientId}/update`,
+    formData,
+    headers(accessToken)
+  );
+};

@@ -4,6 +4,10 @@ import User from "../models/user.js";
 import responseHandler from "../utils/responseHandler.js";
 import mailService from "./email.service.js";
 import jwt from "jsonwebtoken";
+import {
+  deleteFromCloudinary,
+  uploadToCloudinary,
+} from "../utils/cloudinary.js";
 
 const { errorResponse, notFoundResponse } = responseHandler;
 
@@ -222,8 +226,91 @@ const userService = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      path: "/api/v1/auth/refresh-token",
+      path: "/",
     });
+    return true;
+  },
+  uploadAvatar: async (userId, avatar, next) => {
+    const user = await User.findById(userId);
+    if (!user) {
+      return next(notFoundResponse("No user found with that email"));
+    }
+    if (!avatar) {
+      return next(errorResponse("No file uploaded", 400));
+    }
+    //check if user has avatar already
+    const currentAvatar = user.avatar;
+    const currentAvatarId = user.avatarId;
+    if (currentAvatar) {
+      //if avatar exists, delete and replace with new avatar
+      await deleteFromCloudinary(currentAvatarId);
+    }
+    const { url, public_id } = await uploadToCloudinary(avatar, {
+      folder: "Clinicare/avatars",
+      width: 200,
+      height: 200,
+      crop: "fit",
+      format: "webp",
+    });
+    user.avatar = url || user.avatar;
+    user.avatarId = public_id || user.avatarId;
+    await user.save();
+    return user;
+  },
+
+  updateUserPassword: async (userId, userData, next) => {
+    const user = await User.findById(userId).select("+password");
+    if (!user) {
+      return next(notFoundResponse("No user found with that email"));
+    }
+    const { password, newPassword, confirmPassword } = userData;
+    const [checkPassword, isPasswordSame] = await Promise.all([
+      bcrypt.compare(password, user.password),
+      bcrypt.compare(newPassword, user.password),
+    ]);
+    if (!checkPassword) {
+      return next(errorResponse("Incorrect current password", 400));
+    }
+    if (newPassword !== confirmPassword) {
+      return next(
+        errorResponse("New password and confirm password does not match", 400)
+      );
+    }
+    if (isPasswordSame) {
+      return next(
+        errorResponse("New password must be different from old password", 400)
+      );
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    user.password = hashedPassword;
+    const updatedUser = await user.save();
+    return updatedUser;
+  },
+
+  updateUser: async (userId, userData, next) => {
+    const user = await User.findById(userId);
+    if (!user) {
+      return next(notFoundResponse("No user found with that email"));
+    }
+    for (const [key, value] of Object.entries(userData)) {
+      if (value) {
+        user[key] = value;
+      }
+    }
+    const updatedUser = await user.save();
+    return updatedUser;
+  },
+
+  deleteAccount: async (userId, next) => {
+    const user = await User.findById(userId);
+    if (!user) {
+      return next(notFoundResponse("Account not found"));
+    }
+    if (user.avatarId) {
+      await deleteFromCloudinary(user.avatarId);
+    }
+    await user.deleteOne();
     return true;
   },
 };

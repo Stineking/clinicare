@@ -3,7 +3,7 @@ import React from "react";
 export default function PageWrapper({ children, classname }) {
   return (
     <div
-      className={`container pt- md:pt-24 lg:pt-10 pb-6 md:px-4 mx-auto ${classname}`}
+      className={`container pt-15 md:pt-20 lg:pt-10 pb-6 md:px-1 lg:px-4 mx-auto ${classname}`}
     >
       {children}
     </div>

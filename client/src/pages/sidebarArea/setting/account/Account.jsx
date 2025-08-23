@@ -1,14 +1,30 @@
+import { updateUserProfile } from "@/api/auth";
+import ErrorAlert from "@/components/errorAlert";
+import DeleteAccount from "@/features/settings/DeleteAccount";
 import UploadImage from "@/features/settings/UploadImage";
+import useMetaArgs from "@/hooks/useMeta";
 import { useAuth } from "@/store";
 import { formatDate } from "@/utils/constants";
 import { validateUserSchema } from "@/utils/dataSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import {
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 export default function Account() {
-  const { user } = useAuth();
+  useMetaArgs({
+    title: "Account Settings - Clinicare",
+    description: "Account settings for your Clinicare account",
+    keywords: "Clinicare, User-Account, settings",
+  });
+
+  const { user, accessToken } = useAuth();
+  const [error, setError] = useState(null);
 
   const {
     register,
@@ -16,6 +32,9 @@ export default function Account() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm({ resolver: zodResolver(validateUserSchema) });
+
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (user) {
@@ -26,127 +45,130 @@ export default function Account() {
     }
   }, [user, setValue]);
 
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  //redirect to account settings page
-  useEffect(() => {
-    location.pathname === "dashboard/settings" &&
-      navigate("dashboard/settings/account");
-  }, [location.pathname, navigate]);
+const mutation = useMutation({
+    mutationFn: updateUserProfile,
+    onSuccess: async (response) => {
+      if (response.status === 200) {
+        toast.success(response?.data?.message);
+        queryClient.invalidateQueries({ queryKey: ["auth_user"] });
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+      setError(error?.response?.data?.message || "Error updating your profile");
+    },
+  });
+
+  const onSubmit = async (userData) => {
+    mutation.mutate({ userData, accessToken });
+  };
 
   return (
     <div className="space-y-6">
       <h1 className="font-bold text-2xl border-b border-gray-300 pb-2">
         Account
       </h1>
-      <div className="flex items-center gap-3">
-        <div>
-          <UploadImage />
+      <>
+        <UploadImage />
+      </>
+      <form
+        id="/dashboard/settings/account"
+        className="grid grid-cols-12 border-b border-gray-300 pt-2 pb-8"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        {error && <ErrorAlert error={error}/>}
+        <div className="col-span-12 md:col-span-6">
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">Full name</legend>
+            <input
+              type="text"
+              className="input w-full md:w-70 lg:w-115"
+              placeholder="Full name"
+              {...register("fullname")}
+            />
+          </fieldset>
+          {errors.fullname?.message && (
+            <span className="text-xs text-red-500">
+              {errors.fullname?.message}
+            </span>
+          )}
         </div>
-        <div className="flex flex-col md:flex-row md:items-center gap-3 md:mt-8">
-          <button className="btn w-35">Change Image</button>
-          <>JPG, PNG, GIF (max 5mb)</>
+        <div className="col-span-12 md:col-span-6">
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">Email</legend>
+            <input
+              type="email"
+              className="input w-full"
+              placeholder="Email"
+              {...register("email")}
+            />
+          </fieldset>
+          {errors.email?.message && (
+            <span className="text-xs text-red-500">
+              {errors.email?.message}
+            </span>
+          )}
         </div>
-      </div>
-      <form>
-        <div className="grid grid-cols-12 border-b border-gray-300 pt-2 pb-8">
-          <div className="col-span-12 md:col-span-6">
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Full name</legend>
-              <input
-                type="text"
-                className="input w-full md:w-115"
-                placeholder="Full name"
-                {...register("fullname")}
-              />
-            </fieldset>
-            {errors.fullname?.message && (
-              <span className="text-xs text-red-500">
-                {errors.fullname?.message}
-              </span>
-            )}
-          </div>
-          <div className="col-span-12 md:col-span-6">
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Email</legend>
-              <input
-                type="email"
-                className="input w-full"
-                placeholder="Email"
-                {...register("email")}
-              />
-            </fieldset>
-            {errors.email?.message && (
-              <span className="text-xs text-red-500">
-                {errors.email?.message}
-              </span>
-            )}
-          </div>
-          <div className="col-span-12 md:col-span-6">
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Phone</legend>
-              <input
-                type="tel"
-                className="input w-full md:w-115"
-                placeholder="phone"
-                {...register("phone")}
-              />
-            </fieldset>
-            {errors.phone?.message && (
-              <span className="text-xs text-red-500">
-                {errors.phone?.message}
-              </span>
-            )}
-          </div>
-          <div className="col-span-12 md:col-span-6">
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Date of birth</legend>
-              <input
-                type="date"
-                className="input w-full"
-                placeholder="dd/mm/yyyy"
-                {...register("dateOfBirth")}
-              />
-            </fieldset>
-            {errors.dateOfBirth?.message && (
-              <span className="text-xs text-red-500">
-                {errors.dateOfBirth?.message}
-              </span>
-            )}
-          </div>
-          <div className="flex md:hidden gap-10 pt-4">
-            <button
-              type="button"
-              className="btn btn-outline w-[140px] border border-gray-300"
-              onClick={() => navigate("/")}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="btn bg-blue-500 text-white font-bold border border-gray-300 p-2 rounded-md cursor-pointer w-[140px]"
-            >
-              Save
-            </button>
-          </div>
+        <div className="col-span-12 md:col-span-6">
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">Phone</legend>
+            <input
+              type="tel"
+              className="input w-full md:w-70 lg:w-115"
+              placeholder="phone"
+              {...register("phone")}
+            />
+          </fieldset>
+          {errors.phone?.message && (
+            <span className="text-xs text-red-500">
+              {errors.phone?.message}
+            </span>
+          )}
+        </div>
+        <div className="col-span-12 md:col-span-6">
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">Date of birth</legend>
+            <input
+              type="date"
+              className="input w-full"
+              placeholder="dd/mm/yyyy"
+              {...register("dateOfBirth")}
+            />
+          </fieldset>
+          {errors.dateOfBirth?.message && (
+            <span className="text-xs text-red-500">
+              {errors.dateOfBirth?.message}
+            </span>
+          )}
+        </div>
+        <div className="flex md:hidden gap-10 pt-4">
+          <button
+            type="button"
+            className="btn btn-outline w-[140px] border border-gray-300"
+            onClick={() => navigate("/")}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="btn bg-blue-500 text-white font-bold border border-gray-300 p-2 rounded-md cursor-pointer w-[140px]"
+            disabled={isSubmitting || mutation.isPending}
+          >
+            {isSubmitting || mutation.isPending ? "Saving..." : "Save"}
+          </button>
         </div>
       </form>
       <div className="block md:flex justify-between pt-2 items-center">
         <div className="">
           <h1 className="font-bold text-xl">Delete account</h1>
-          <p className="pb-4 md:pb-0 md:w-115 text-[13px] md:text-[16px]">
+          <p className="pb-4 md:pb-0 md:w-75 lg:w-115 text-[13px] md:text-[16px]">
             When you delete your account, you loose access to medical history
             and appointments. We permanently delete your account and alll
             associated data.
           </p>
         </div>
-        <button
-          className="btn bg-red-500 hover:bg-red-600 text-white w-full md:w-35"
-          type="button"
-        >
-          Delete Account
-        </button>
+        <DeleteAccount />
       </div>
     </div>
   );

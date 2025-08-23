@@ -7,8 +7,8 @@ export default function MobileNav() {
     const { user } = useAuth();
   
   return (
-    <div className='lg:hidden bg-white shadow w-full'>
-        <div className='px-4 py-5 flex items-center justify-between'>
+    <div className='lg:hidden fixed bg-white z-10 shadow w-full'>
+        <div className='px-4 md:px-8 py-5 flex items-center justify-between'>
             <Logo/>
             <Drawer user={user}/>
         </div>

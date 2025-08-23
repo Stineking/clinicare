@@ -31,11 +31,29 @@ export default function Drawer({user}) {
         </button>
         <div className="px-4 py-5 w-full h-full overflow-y-auto">
           <div className="flex gap-2 items-center">
-            <img
-              className="rounded-full h-10 w-10"
-              src="https://img.daisyui.com/images/profile/demo/wonderperson@192.webp"
-              alt="avatar-icon"
-            />
+            <div className="flex gap-2 items-center">
+              <div className="avatar avatar-placeholder">
+                <div className="w-10 rounded-full bg-gray-300 text-gray-600 border-2 border-gray-300">
+                  {user?.avatar ? (
+                    <img
+                      src={user?.avatar}
+                      alt={user?.fullname.split(" ")[0].charAt(0)}
+                      referrerPolicy="no-referrer"
+                      loading="lazy"
+                      priority="high"
+                    />
+                  ) : (
+                    <span className="text-sm">
+                      {user?.fullname
+                        ?.split(" ")
+                        .map((name) => name[0])
+                        .join(" ")
+                        .toUpperCase()}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
             <div>
               <h1 className="font-bold text-lg">{user?.fullname}</h1>
               <p className="text-gray-500">Admin</p>
@@ -54,6 +72,7 @@ export default function Drawer({user}) {
                     <NavLink
                       key={link.id}
                       to={link.to}
+                      onClick={() => setOpen(false)}
                       className={({ isActive }) =>
                         `${
                           isActive

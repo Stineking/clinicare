@@ -1,53 +1,59 @@
-import React, { useState } from "react";
-import { Link } from "react-router";
+import { validateSignUpSchema } from "@/utils/dataSchema";
 import { RiUser4Fill } from "@remixicon/react";
-import { useForm } from "react-hook-form";
-import { validateSignInSchema } from "@/utils/dataSchema";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import useMetaArgs from "@/hooks/useMeta";
-import { loginUser } from "@/api/auth";
+import { registerUser } from "@/api/auth";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import ErrorAlert from "@/components/errorAlert";
 import { useAuth } from "@/store";
 
-export default function Login() {
+//use mutation to handle form submission
+export default function SignUp() {
   useMetaArgs({
-    title: "Login - Clinicare",
-    description: "Login Your Clinicare account",
-    keywords: "Clinicare, User-account, login, account",
+    title: "Sign Up - Clinicare",
+    description: "Create an account on Clinicare",
+    keywords: "Clinicare, create account, setup, sign-up, account",
   });
+  const { setAccessToken, user } = useAuth();
 
-  const [isVisible, setIsVisible] = useState(false);
+  
   const [error, setError] = useState(null);
-
+  
+  const navigate = useNavigate();
+  
+  const [isVisible, setIsVisible] = useState(false);
   const togglePassword = () => {
     setIsVisible((prev) => !prev);
   };
-
-  const { setAccessToken } = useAuth();
 
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({ resolver: zodResolver(validateSignInSchema) });
+  } = useForm({ resolver: zodResolver(validateSignUpSchema) });
 
   // const queryClient = useQueryClient(); //initializing query client from tanstack
   //mutation are for create, update or delete actions.
   const mutation = useMutation({
-    mutationFn: loginUser,
+    mutationFn: registerUser,
     onSuccess: (response) => {
       //what you want to do if api call is a success.
       // console.log(response);
-      toast.success(response?.data?.message || "Login successful");
-      setAccessToken(response?.data?.data?.accessToken)
+      toast.success(response?.data?.message || "Registeration successful");
+      setAccessToken(response?.data?.accessToken);
       //save access token tolocal storage
+       if (!user?.isVerified) {
+        navigate("/verify-account")
+      } 
     },
     onError: (error) => {
       console.log(error);
-      setError(error?.response?.data?.message || "Login failed");
+      setError(error?.response?.data?.message || "Registeration failed");
     },
   });
 
@@ -59,25 +65,42 @@ export default function Login() {
     <div className="min-h-[calc(100vh-4rem)] container mx-auto flex justify-center pt-10 items-center">
       <div className="px-4 md:px-0 md:mb-5">
         <form
-          className="bg-white px-5 py-3 md:p flex flex-col justify-center rounded-xl shadow max-w-[400px]"
+          className="bg-white px-5 py-3 w-[360px] flex flex-col justify-center rounded-xl shadow max-w-[400px]"
           onSubmit={handleSubmit(onSubmit)}
         >
           <RiUser4Fill
-            className="mx-auto my-2 border rounded-full p-2 border-blue-500 text-blue-500 shadow-lg"
+            className="mx-auto border rounded-full p-2 border-blue-500 text-blue-500 shadow-lg"
             size={40}
           />
-          <h1 className="font-bold text-2xl text-center py-2">Welcome Back</h1>
+          <h1 className="font-bold text-2xl text-center py-2">
+            Create Account
+          </h1>
           <p className="text-center text-[16px] md:text-[15px] text-zinc-600">
-            Glad to see you again. Log in to your account.
+            Enter your details to sign up
           </p>
           {error && <ErrorAlert error={error} />}
-
+          <div>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Full name</legend>
+              <input
+                type="text"
+                className="input"
+                placeholder="Full name"
+                {...register("fullname")}
+              />
+            </fieldset>
+            {errors.fullname?.message && (
+              <span className="text-xs text-red-500">
+                {errors.fullname?.message}
+              </span>
+            )}
+          </div>
           <div>
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Email</legend>
               <input
                 type="email"
-                className="input w-full"
+                className="input"
                 placeholder="Email"
                 {...register("email")}
               />
@@ -88,12 +111,13 @@ export default function Login() {
               </span>
             )}
           </div>
+
           <div>
             <fieldset className="fieldset relative">
               <legend className="fieldset-legend">Password</legend>
               <input
                 type={isVisible ? "text" : "password"}
-                className="input w-full "
+                className="input"
                 placeholder="Password"
                 {...register("password")}
               />
@@ -111,25 +135,19 @@ export default function Login() {
               </span>
             )}
           </div>
-          <Link
-            to="/account/forgot-password"
-            className="text-blue-500 text-[14px] font-bold"
-          >
-            Forgot Password?
-          </Link>
           <div>
             <button
               type="submit"
-              disabled={isSubmitting}
-              className="bg-blue-500 hover:bg-blue-600 w-full py-2 text-white text-[14px] font-bold rounded-sm my-4"
+              disabled={isSubmitting || mutation.isPending}
+              className="bg-blue-500 hover:bg-blue-600 w-full cursor-pointer py-2 text-white text-[14px] font-bold rounded-sm my-4"
             >
-              {isSubmitting ? "Signing In..." : "Sign In"}
+              {isSubmitting || mutation.isPending ? "Signing Up..." : "Sign Up"}
             </button>
           </div>
           <p className="text-center text-[13px] text-zinc-600">
-            Don't have an account?{" "}
-            <Link className="text-blue-500 font-bold" to="/account/signup">
-              Sign Up
+            Already have an account?{" "}
+            <Link className="text-blue-500 font-bold" to="/account/signin">
+              Login
             </Link>
           </p>
         </form>

@@ -20,7 +20,7 @@ export const createSendToken = (user) => {
     httpOnly: true, //cookie is not accessible in Javascript.
     secure: isProduction, //send cookie over HTTPS only when in production mode or enviroment.
     maxAge: 7 * 24 * 60 * 60 * 1000, //cookie is valid for 7 days.
-    path: "/api/v1/auth/refresh-token",  //cookie is valid on all path across your domain.
+    path: "/api/v1/auth/refresh-token", //cookie is valid on all path across your domain.
     sameSite: isProduction ? "none" : "lax", //is required when the cookie is being used on diff domains. We want to adjust the cross-site request policy. Our app is both client/server which has different address so we want to ensure that in production mode, the cookie can be passed over a secure relay by setting the secure option to true (ensuring cookie is sent over HTTPS), but in dev mode we specify las because we need to use it locally. If sameSite is set to none and secure is set to false, the browser will reject the coookie
   };
   return {

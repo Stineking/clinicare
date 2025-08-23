@@ -10,6 +10,10 @@ import {
   forgotPassword,
   resetPassword,
   logout,
+  uploadAvatar,
+  updateUserPassword,
+  updateUser,
+  deleteAccount
 } from "../controllers/userController.js";
 import { validateFormData } from "../middlewares/validateForm.js";
 import {
@@ -18,6 +22,8 @@ import {
   validateAccountSchema,
   forgotPasswordSchema,
   validateResetPasswordSchema,
+  updatePasswordSchema,
+  validateUserSchema
 } from "../utils/dataSchema.js";
 import { verifyAuth } from "../middlewares/authenticate.js";
 import { rateLimiter, refreshTokenLimit } from "../middlewares/rateLimit.js";
@@ -40,7 +46,7 @@ router.get(
 );
 
 // router.post("/logout", verifyAuth, clearCache("auth_user"), logoutUser);
-router.post("/refresh-token", refreshTokenLimit, refreshAccessToken);
+router.post("/refresh-token", refreshAccessToken);
 router.patch(
   "/verify-account",
   rateLimiter,
@@ -72,5 +78,36 @@ router.patch(
 );
 
 router.post("/logout", verifyAuth, clearCache("auth_user"), logout);
+
+router.patch(
+  "/upload-avatar",
+  verifyAuth,
+  clearCache("auth_user"),
+  uploadAvatar
+);
+
+router.patch(
+  "/update-password",
+  rateLimiter,
+  verifyAuth,
+  validateFormData(updatePasswordSchema),
+  clearCache("auth_user"),
+  updateUserPassword
+);
+
+router.patch(
+  "/update-user",
+  verifyAuth,
+  validateFormData(validateUserSchema),
+  clearCache("auth_user"),
+  updateUser
+);
+
+router.delete(
+  "/delete-account",
+  verifyAuth,
+  clearCache("auth_user"),
+  deleteAccount
+);
 
 export default router;

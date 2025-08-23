@@ -29,6 +29,9 @@ export function PrivateRoutes({ children, accessToken, user }) {
         replace: true,
       });
     }
+     if (user && !user.isVerified && location.pathname !== "/verify-account") {
+      navigate("/verify-account");
+    }
     if (
       user &&
       user?.isVerified &&

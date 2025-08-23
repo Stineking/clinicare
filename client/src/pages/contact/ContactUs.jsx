@@ -5,10 +5,10 @@ export default function ContactUs() {
   useMetaArgs({
       title: "Contact Us - Clinicare",
       description: "Contact us page.",
-      keywords: "Clinicare, contact-us, account, hospital information",
+      keywords: "Clinicare, contact-us, hospital information",
     });
   return (
-    <div className="flex flex-col justify-center items-center mx-auto container min-h-[86.7vh] md:min-h-[85vh] mt-">
+    <div className="flex flex-col justify-center items-center mx-auto container min-h-[calc(100vh-4rem)]">
       <div >
         <img
           className="h-[90%] w-full"
