@@ -6,7 +6,7 @@ export default function Navbar({ user }) {
   const greeting = getTimeBasedGreeting();
   return (
     <div className="hidden lg:block sticky top-2 right-0 z-30 left-[200px] bg-white/50 backdrop-blur supports-[backdrop-filter]:bg-white/50 px-4 rounded-full border border-zinc-200">
-    <div className=" mx-auto container px-4">
+    <div className=" mx-auto container">
       <div className="h-13 flex justify-between items-center">
         <h1 className="text-lg font-bold">
           {greeting}, {user?.fullname}!👋

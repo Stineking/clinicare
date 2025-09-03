@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AuthContext } from ".";
 import { getAuthenticatedUser, refreshAccessToken } from "@/api/auth";
 import { useQuery } from "@tanstack/react-query";
@@ -8,7 +8,7 @@ export default function AuthProvider({ children }) {
   //set and save the accessToken to state memory.
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null); //default value of logged in user is null
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  // const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   //Query to refresh accessToken on app start
   useQuery({
@@ -31,29 +31,48 @@ export default function AuthProvider({ children }) {
   });
 
   //fetch user data usng useQuery
-  useQuery({
-    queryKey: ["auth_user"], //cache key for our api call.
-    queryFn: async () => {
-      setIsAuthenticating(true);
-      const res = await getAuthenticatedUser(accessToken);
-      if (res.status === 200) {
-        setUser(res.data?.data);
-        setIsAuthenticating(false);
-        //hold the value from our res in User state.
-        return res;
-      }
-      setIsAuthenticating(false);
-      return null;
-    },
-    onError: (error) => {
+  // useQuery({
+  //   queryKey: ["auth_user"], //cache key for our api call.
+  //   queryFn: async () => {
+  //     setIsAuthenticating(true);
+  //     const res = await getAuthenticatedUser(accessToken);
+  //     if (res.status === 200) {
+  //       setUser(res.data?.data);
+  //       setIsAuthenticating(false);
+  //       //hold the value from our res in User state.
+  //       return res;
+  //     }
+  //     setIsAuthenticating(false);
+  //     return null;
+  //   },
+  //   onError: (error) => {
+  //     console.error("Error fetching user", error);
+  //   },
+  //   enabled: !!accessToken, //run only when we have the accessToken b
+  // });
+
+  // if (isAuthenticating) {
+  //   return <LazyLoader />;
+  // }
+
+  //fetch user data usng useQuery
+
+  const { isPending, data } = useQuery({
+    queryKey: ["auth_user", accessToken],
+    queryFn: () => getAuthenticatedUser(accessToken),
+    onError: async (error) => {
       console.error("Error fetching user", error);
     },
-    enabled: !!accessToken, //run only when we have the accessToken b
+    enabled: !!accessToken,
   });
-  console.log(user);
-  console.log(accessToken);
 
-  if (isAuthenticating) {
+  useEffect(() => {
+    if (data?.status === 200) {
+      setUser(data?.data?.data);
+    }
+  }, [data?.data?.data, data?.status]);
+
+  if (isPending && accessToken) {
     return <LazyLoader />;
   }
 

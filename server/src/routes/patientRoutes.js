@@ -3,7 +3,12 @@ import { authorizedRoles, verifyAuth } from "../middlewares/authenticate.js";
 import { validateFormData } from "../middlewares/validateForm.js";
 import { validatePatientSchema } from "../utils/dataSchema.js";
 import { cacheMiddleware, clearCache } from "../middlewares/cache.js";
-import { getPatient, register, updatePatient } from "../controllers/patientController.js";
+import {
+  getAllPatients,
+  getPatient,
+  register,
+  updatePatient,
+} from "../controllers/patientController.js";
 
 const router = express.Router();
 
@@ -25,6 +30,14 @@ router.patch(
   validateFormData(validatePatientSchema),
   clearCache("patient"),
   updatePatient
+);
+
+router.get(
+  "/all",
+  verifyAuth,
+  authorizedRoles("admin", "doctor", "staff", "nurse"),
+  cacheMiddleware("patients", 3600),
+  getAllPatients
 );
 
 export default router;

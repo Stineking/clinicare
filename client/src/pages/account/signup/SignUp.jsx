@@ -43,16 +43,15 @@ export default function SignUp() {
     mutationFn: registerUser,
     onSuccess: (response) => {
       //what you want to do if api call is a success.
-      // console.log(response);
       toast.success(response?.data?.message || "Registeration successful");
-      setAccessToken(response?.data?.accessToken);
+      setAccessToken(response?.data?.data?.accessToken);
       //save access token tolocal storage
        if (!user?.isVerified) {
         navigate("/verify-account")
       } 
     },
     onError: (error) => {
-      console.log(error);
+      import.meta.env.DEV && console.log(error);
       setError(error?.response?.data?.message || "Registeration failed");
     },
   });

@@ -1,16 +1,40 @@
 // import { useAuth } from "@/store";
 import { RiCloseLine, RiLogoutCircleRLine, RiMenuLine } from "@remixicon/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
-import { sidebarLinks } from "@/utils/constants";
-import { NavLink } from "react-router";
+import { roleBasedPathPermissions, sidebarLinks } from "@/utils/constants";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import Logout from "./Logout";
 // import { useAuth } from "@/store";
 
-export default function Drawer({user}) {
+export default function Drawer({ user }) {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const toggleDrawer = () => setOpen(!open);
   // const user = useAuth();
+
+  const location = useLocation();
+  const path = location.pathname;
+  const roles = ["patient", "doctor", "admin", "nurse", "staff"];
+  //match user role based of our roles array using the find method
+  const userRole = roles.find((role) => role === user?.role);
+  const isAuthorized =
+    (userRole === "admin" && roleBasedPathPermissions.admin.allowedSubpaths) ||
+    (userRole === "doctor" &&
+      roleBasedPathPermissions.doctor.allowedSubpaths) ||
+    (userRole === "patient" &&
+      roleBasedPathPermissions.patient.allowedSubpaths) ||
+    (userRole === "nurse" && roleBasedPathPermissions.nurse.allowedSubpaths) ||
+    (userRole === "staff" && roleBasedPathPermissions.staff.allowedSubpaths);
+
+    useEffect(() => {
+    const allowedPaths =
+      roleBasedPathPermissions[userRole]?.allowedSubpaths || [];
+    const isPathAllowed = allowedPaths.includes(path);
+    if (!isAuthorized || !isPathAllowed) {
+      navigate("/dashboard");
+    }
+  }, [isAuthorized, navigate, path, userRole]);
 
   return (
     <div>
@@ -56,7 +80,7 @@ export default function Drawer({user}) {
             </div>
             <div>
               <h1 className="font-bold text-lg">{user?.fullname}</h1>
-              <p className="text-gray-500">Admin</p>
+              <p className="text-gray-500">{user?.role}</p>
             </div>
           </div>
           {/* Render Sidebar only when drawer is open */}
@@ -64,27 +88,59 @@ export default function Drawer({user}) {
           <div className="overflow-y-auto h-[calc(100vh-150px)] space-y-2">
             {sidebarLinks.map((section) => (
               <div key={section.title}>
-                <p className="text-xs font-semi-bold text-gray-500 my-2">
-                  {section.title}
+                <p className="text-sm font-semi-bold text-gray-500 my-4">
+                  {section.title === "Management" && userRole === "patient"
+                    ? ""
+                    : section.title}
                 </p>
                 <div className="">
-                  {section.links.map((link) => (
-                    <NavLink
-                      key={link.id}
-                      to={link.to}
-                      onClick={() => setOpen(false)}
-                      className={({ isActive }) =>
-                        `${
-                          isActive
-                            ? "text-blue-500 font-bold bg-blue-100  rounded-full"
-                            : ""
-                        } p-1.5 flex items-center gap-2 hover:text-blue-500 transition-all duration-300`
+                  {section.links
+                    .filter((subPaths) => {
+                      if (
+                        roleBasedPathPermissions[userRole] &&
+                        isAuthorized.includes(subPaths.to)
+                      ) {
+                        return true;
                       }
-                    >
-                      <link.icon className="h-5 w-5" />
-                      <span>{link.label}</span>
-                    </NavLink>
-                  ))}
+                      return false;
+                    })
+                    .map((link) =>
+                      // Highlighted update: Only dashboard link gets 'end' prop
+                      link.to === "/dashboard" ? (
+                        <NavLink
+                          key={link.id}
+                          to={link.to}
+                          end
+                          onClick={() => setOpen(false)}
+                          className={({ isActive }) =>
+                            `${
+                              isActive
+                                ? "text-blue-500 font-bold bg-blue-100  rounded-full"
+                                : ""
+                            } p-1.5 flex items-center gap-2 hover:text-blue-500 transition-all duration-300`
+                          }
+                        >
+                          <link.icon className="h-5 w-5" />
+                          <span>{link.label}</span>
+                        </NavLink>
+                      ) : (
+                        <NavLink
+                          key={link.id}
+                          to={link.to}
+                          onClick={() => setOpen(false)}
+                          className={({ isActive }) =>
+                            `${
+                              isActive
+                                ? "text-blue-500 font-bold bg-blue-100  rounded-full"
+                                : ""
+                            } p-1.5 flex items-center gap-2 hover:text-blue-500 transition-all duration-300`
+                          }
+                        >
+                          <link.icon className="h-5 w-5" />
+                          <span>{link.label}</span>
+                        </NavLink>
+                      )
+                    )}
                 </div>
               </div>
             ))}

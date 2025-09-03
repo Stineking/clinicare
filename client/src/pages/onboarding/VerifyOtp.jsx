@@ -76,10 +76,10 @@ export default function VerifyOtp() {
       toast.success(response?.data?.message || "Account verified");
       //clear old user data and refetch
       queryClient.invalidateQueries({ queryKey: ["auth_user"] });
-      setSuccess(true)
+      setSuccess(true);
     },
     onError: (error) => {
-      console.log(error);
+      import.meta.env.DEV && console.log(error);
       setError(error?.response?.data?.message || "Account verification failed");
     },
   });
@@ -90,7 +90,7 @@ export default function VerifyOtp() {
       toast.success(response?.data?.message || "Verification token sent");
     },
     onError: (error) => {
-      console.log(error);
+      import.meta.env.DEV && console.log(error);
       setError(error?.response?.data?.message || "Verification code failed");
     },
   });
@@ -113,82 +113,91 @@ export default function VerifyOtp() {
     sendResendToken.mutate(accessToken);
   };
 
+  const redirect = () => {
+    if (user?.role === "patient") {
+      navigate("/patient-onboard");
+    }
+    navigate("/dashboard");
+  };
+
   return (
     <div className="min-h-[calc(100vh-4rem)] container mx-auto flex justify-center pt-15  items-center">
-      {success || user?.isVerified? <><div className="p-4 max-w-[800px] mx-auto text-center">
+      {success || user?.isVerified ? (
+        <>
+          <div className="p-4 max-w-[800px] mx-auto text-center">
             <img src="/Success.svg" alt="success" className="w-full h-full" />
             <h1 className="text-2xl font-bold">Congratulations!</h1>
             <p className="text-gray-600">
-              {user?.isVerified
-                ? "Your account has already been verified."
-                : "Your account has been verified successfully."}
+              Your account has been verified successfully.
             </p>
             <button
               className="btn my-4 bg-blue-500 dark:bg-blue-400 hover:bg-blue-600 text-white cursor-pointer"
               size="lg"
-              onClick={() => navigate("/patient-onboard", { replace: true })}
+              onClick={redirect}
             >
               Continue
             </button>
-          </div></> : 
-      <div className="px-4 md:px-0">
-        <form
-          className="bg-white px-5 py-4 flex flex-col justify-center rounded-xl shadow max-w-[400px]"
-          onSubmit={onSubmit}
-        >
-          <RiMailFill
-            className="mx-auto border rounded-full p-2 border-blue-500 text-blue-500 shadow-lg"
-            size={36}
-          />
-          <h1 className="font-bold text-2xl text-center py-2">
-            OTP Verification
-          </h1>
-          <p className="text-center text-[14px] md:text-[15px] text-gray-600 ">
-            We have sent a verification code to your email. <br /> Please enter
-            it below.
-          </p>
-          {error && <ErrorAlert error={error} />}
-          <div className="py-5 w-full ">
-            <PinField
-              length={6}
-              autoComplete="one-time-code"
-              autoCorrect="off"
-              dir="ltr"
-              pattern="[0-9]"
-              type="text"
-              value={verificationToken}
-              onChange={(value) => {
-                setVerificationToken(value);
-              }}
-              className="w-[50px] sm:w-[58px] text-center border border-gray-300 rounded-md p-2 font-bold my-2"
-            />
           </div>
-          <button
-            type="submit"
-            className="btn bg-blue-500 hover:bg-blue-600 rounded-sm text-white w-full md:w-[350px]"
-            disabled={mutation.isPending || verificationToken.length !== 6}
+        </>
+      ) : (
+        <div className="px-4 md:px-0">
+          <form
+            className="bg-white px-5 py-4 flex flex-col justify-center rounded-xl shadow max-w-[400px]"
+            onSubmit={onSubmit}
           >
-            {mutation.isPending ? "Verifying..." : "Verify"}
-          </button>
-          <div className=" flex flex-col items-center pt-3">
-            <p className="text-[14px] text-gray-500">
-              Did not receive a code? or Code expired?
+            <RiMailFill
+              className="mx-auto border rounded-full p-2 border-blue-500 text-blue-500 shadow-lg"
+              size={36}
+            />
+            <h1 className="font-bold text-2xl text-center py-2">
+              OTP Verification
+            </h1>
+            <p className="text-center text-[14px] md:text-[15px] text-gray-600 ">
+              We have sent a verification code to your email. <br /> Please
+              enter it below.
             </p>
+            {error && <ErrorAlert error={error} />}
+            <div className="py-5 w-full ">
+              <PinField
+                length={6}
+                autoComplete="one-time-code"
+                autoCorrect="off"
+                dir="ltr"
+                pattern="[0-9]"
+                type="text"
+                value={verificationToken}
+                onChange={(value) => {
+                  setVerificationToken(value);
+                }}
+                className="w-[50px] sm:w-[58px] text-center border border-gray-300 rounded-md p-2 font-bold my-2"
+              />
+            </div>
             <button
-              className={`btn bg-blue-500 mt-1 hover:bg-blue-600 font-bold rounded-sm ${
-                isResendDisabled
-                  ? "text-black cursor-not-allowed"
-                  : "text-white"
-              }`}
-              isdisabled={isResendDisabled}
-              onClick={handleResendCode}
+              type="submit"
+              className="btn bg-blue-500 hover:bg-blue-600 rounded-sm text-white w-full md:w-[350px]"
+              disabled={mutation.isPending || verificationToken.length !== 6}
             >
-              {isResendDisabled ? `Resend in ${timer}s` : "Resend Code"}
+              {mutation.isPending ? "Verifying..." : "Verify"}
             </button>
-          </div>
-        </form>
-      </div>
-}
+            <div className=" flex flex-col items-center pt-3">
+              <p className="text-[14px] text-gray-500">
+                Did not receive a code? or Code expired?
+              </p>
+              <button
+                className={`btn bg-blue-500 mt-1 hover:bg-blue-600 font-bold rounded-sm ${
+                  isResendDisabled
+                    ? "text-black cursor-not-allowed"
+                    : "text-white"
+                }`}
+                isdisabled={isResendDisabled}
+                onClick={handleResendCode}
+              >
+                {isResendDisabled ? `Resend in ${timer}s` : "Resend Code"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

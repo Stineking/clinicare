@@ -18,7 +18,7 @@ export default function Login() {
     keywords: "Clinicare, User-account, login, account",
   });
   const { setAccessToken, user } = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [isVisible, setIsVisible] = useState(false);
   const [error, setError] = useState(null);
@@ -26,7 +26,6 @@ export default function Login() {
   const togglePassword = () => {
     setIsVisible((prev) => !prev);
   };
-
 
   const {
     register,
@@ -40,13 +39,14 @@ export default function Login() {
     mutationFn: loginUser,
     onSuccess: (response) => {
       //what you want to do if api call is a success.
-      // console.log(response);
       toast.success(response?.data?.message || "Login successful");
-      setAccessToken(response?.data?.data?.accessToken)
+      setAccessToken(response?.data?.data?.accessToken);
       //save access token tolocal storage
       if (!user?.isVerified) {
-        navigate("/verify-account")
-      } 
+        navigate("/verify-account");
+      } else {
+        navigate("/dashboard");
+      }
     },
     onError: (error) => {
       console.log(error);

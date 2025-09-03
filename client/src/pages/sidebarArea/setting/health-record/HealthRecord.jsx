@@ -71,7 +71,7 @@ export default function HealthRecord() {
       }
     },
     onError: (error) => {
-      console.log(error);
+      import.meta.env.DEV && console.log(error);
       setError(error?.response?.data?.message || "Error updating your profile");
     },
   });
@@ -95,194 +95,194 @@ export default function HealthRecord() {
       <h1 className="font-bold text-2xl border-b border-gray-300 pb-2">
         Health Information
       </h1>
-      <form
-        className="grid grid-cols-12 gap-3"
-        onSubmit={handleSubmit(onSubmit)}
-        id="/dashboard/settings/health"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} id="/dashboard/settings/health">
         {isError ||
           (err && <ErrorAlert error={error?.response?.data?.message || err} />)}
-        <div className="col-span-12 md:col-span-6">
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Full name</legend>
-            <input
-              type="text"
-              className="input w-full"
-              placeholder="Full name"
-              {...register("fullname")}
-            />
-          </fieldset>
-          {errors.fullname?.message && (
-            <span className="text-xs text-red-500">
-              {errors.fullname?.message}
-            </span>
-          )}
+        <div className="grid grid-cols-12 gap-3">
+          <div className="col-span-12 md:col-span-6">
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Full name</legend>
+              <input
+                type="text"
+                className="input w-full"
+                placeholder="Full name"
+                {...register("fullname")}
+              />
+            </fieldset>
+            {errors.fullname?.message && (
+              <span className="text-xs text-red-500">
+                {errors.fullname?.message}
+              </span>
+            )}
+          </div>
+          <div className="col-span-12 md:col-span-6">
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Email</legend>
+              <input
+                type="email"
+                className="input w-full"
+                placeholder="Email"
+                {...register("email")}
+              />
+            </fieldset>
+            {errors.email?.message && (
+              <span className="text-xs text-red-500">
+                {errors.email?.message}
+              </span>
+            )}
+          </div>
+          <div className="col-span-12 md:col-span-6">
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Phone</legend>
+              <input
+                type="tel"
+                className="input w-full"
+                placeholder="Phone"
+                {...register("phone")}
+              />
+            </fieldset>
+            {errors.phone?.message && (
+              <span className="text-xs text-red-500">
+                {errors.phone?.message}
+              </span>
+            )}
+          </div>
+          <div className="col-span-12 md:col-span-6">
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Date of birth</legend>
+              <input
+                type="date"
+                className="input w-full"
+                placeholder="dd/mm/yyyy"
+                {...register("dateOfBirth")}
+              />
+            </fieldset>
+            {errors.dateOfBirth?.message && (
+              <span className="text-xs text-red-500">
+                {errors.dateOfBirth?.message}
+              </span>
+            )}
+          </div>
+          <div className="col-span-12 md:col-span-6">
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Gender</legend>
+              <select
+                name="gender"
+                id=""
+                defaultValue={""}
+                className="select capitalize w-full"
+                {...register("gender")}
+                disabled={isSubmitting}
+              >
+                <option value="">Select Gender</option>
+                {gender?.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </fieldset>
+            {errors.gender?.message && (
+              <span className="text-xs text-red-500">
+                {errors.gender?.message}
+              </span>
+            )}
+          </div>
+          <div className="col-span-12 md:col-span-6">
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Blood group</legend>
+              <select
+                name="bloodGroup"
+                id=""
+                defaultValue={""}
+                disabled={isSubmitting}
+                {...register("bloodGroup")}
+                className="select capitalize w-full"
+              >
+                <option value="">Select Blood Group</option>
+                {bloodGroupOptions?.map((option, index) => (
+                  <option key={index} value={option.id}>
+                    {option.name}
+                  </option>
+                ))}
+              </select>
+            </fieldset>
+            {errors.bloodGroup?.message && (
+              <span className="text-xs text-red-500">
+                {errors.bloodGroup?.message}
+              </span>
+            )}
+          </div>
+          <div className="col-span-12">
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Address</legend>
+              <input
+                type="text"
+                className="input w-full"
+                placeholder="Address"
+                {...register("address")}
+              />
+            </fieldset>
+            {errors.address?.message && (
+              <span className="text-xs text-red-500">
+                {errors.address?.message}
+              </span>
+            )}
+          </div>
+          <div className="col-span-12 md:col-span-6">
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Emergency contact</legend>
+              <input
+                type="text"
+                className="input text-xs w-full"
+                placeholder="Emergency contact"
+                {...register("emergencyContact")}
+              />
+            </fieldset>
+            {errors.emergencyContact?.message && (
+              <span className="text-xs text-red-500">
+                {errors.emergencyContact?.message}
+              </span>
+            )}
+          </div>
+          <div className="col-span-12 md:col-span-6">
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">
+                Emergency contact phone
+              </legend>
+              <input
+                type="text"
+                className="input text-xs w-full"
+                placeholder="Emergency contact phone"
+                {...register("emergencyContactPhone")}
+              />
+            </fieldset>
+            {errors.emergencyContactPhone?.message && (
+              <span className="text-xs text-red-500">
+                {errors.emergencyContactPhone?.message}
+              </span>
+            )}
+          </div>
+          <div className="col-span-12 md:col-span-6">
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">
+                Emergency contact relationship
+              </legend>
+              <input
+                type="text"
+                className="input text-xs w-full"
+                placeholder="Emergency contact relationship"
+                {...register("emergencyContactRelationship")}
+              />
+            </fieldset>
+            {errors.emergencyContactRelationship?.message && (
+              <span className="text-xs text-red-500">
+                {errors.emergencyContactRelationship?.message}
+              </span>
+            )}
+          </div>
         </div>
-        <div className="col-span-12 md:col-span-6">
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Email</legend>
-            <input
-              type="email"
-              className="input w-full"
-              placeholder="Email"
-              {...register("email")}
-            />
-          </fieldset>
-          {errors.email?.message && (
-            <span className="text-xs text-red-500">
-              {errors.email?.message}
-            </span>
-          )}
-        </div>
-        <div className="col-span-12 md:col-span-6">
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Phone</legend>
-            <input
-              type="tel"
-              className="input w-full"
-              placeholder="Phone"
-              {...register("phone")}
-            />
-          </fieldset>
-          {errors.phone?.message && (
-            <span className="text-xs text-red-500">
-              {errors.phone?.message}
-            </span>
-          )}
-        </div>
-        <div className="col-span-12 md:col-span-6">
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Date of birth</legend>
-            <input
-              type="date"
-              className="input w-full"
-              placeholder="dd/mm/yyyy"
-              {...register("dateOfBirth")}
-            />
-          </fieldset>
-          {errors.dateOfBirth?.message && (
-            <span className="text-xs text-red-500">
-              {errors.dateOfBirth?.message}
-            </span>
-          )}
-        </div>
-        <div className="col-span-12 md:col-span-6">
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Gender</legend>
-            <select
-              name="gender"
-              id=""
-              defaultValue={""}
-              className="select capitalize w-full"
-              {...register("gender")}
-              disabled={isSubmitting}
-            >
-              <option value="">Select Gender</option>
-              {gender?.map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </fieldset>
-          {errors.gender?.message && (
-            <span className="text-xs text-red-500">
-              {errors.gender?.message}
-            </span>
-          )}
-        </div>
-        <div className="col-span-12 md:col-span-6">
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Blood group</legend>
-            <select
-              name="bloodGroup"
-              id=""
-              defaultValue={""}
-              disabled={isSubmitting}
-              {...register("bloodGroup")}
-              className="select capitalize w-full"
-            >
-              <option value="">Select Blood Group</option>
-              {bloodGroupOptions?.map((option, index) => (
-                <option key={index} value={option.id}>
-                  {option.name}
-                </option>
-              ))}
-            </select>
-          </fieldset>
-          {errors.bloodGroup?.message && (
-            <span className="text-xs text-red-500">
-              {errors.bloodGroup?.message}
-            </span>
-          )}
-        </div>
-        <div className="col-span-12">
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Address</legend>
-            <input
-              type="text"
-              className="input w-full"
-              placeholder="Address"
-              {...register("address")}
-            />
-          </fieldset>
-          {errors.address?.message && (
-            <span className="text-xs text-red-500">
-              {errors.address?.message}
-            </span>
-          )}
-        </div>
-        <div className="col-span-12 md:col-span-6">
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Emergency contact</legend>
-            <input
-              type="text"
-              className="input text-xs w-full"
-              placeholder="Emergency contact"
-              {...register("emergencyContact")}
-            />
-          </fieldset>
-          {errors.emergencyContact?.message && (
-            <span className="text-xs text-red-500">
-              {errors.emergencyContact?.message}
-            </span>
-          )}
-        </div>
-        <div className="col-span-12 md:col-span-6">
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Emergency contact phone</legend>
-            <input
-              type="text"
-              className="input text-xs w-full"
-              placeholder="Emergency contact phone"
-              {...register("emergencyContactPhone")}
-            />
-          </fieldset>
-          {errors.emergencyContactPhone?.message && (
-            <span className="text-xs text-red-500">
-              {errors.emergencyContactPhone?.message}
-            </span>
-          )}
-        </div>
-        <div className="col-span-12 md:col-span-6">
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">
-              Emergency contact relationship
-            </legend>
-            <input
-              type="text"
-              className="input text-xs w-full"
-              placeholder="Emergency contact relationship"
-              {...register("emergencyContactRelationship")}
-            />
-          </fieldset>
-          {errors.emergencyContactRelationship?.message && (
-            <span className="text-xs text-red-500">
-              {errors.emergencyContactRelationship?.message}
-            </span>
-          )}
-        </div>
-        <div className="flex md:hidden gap-10 pt-4">
+        <div className="flex md:hidden justify-between md:justify-end gap-3 pt-4">
           <button
             type="button"
             className="btn btn-outline w-[140px] border border-gray-300"

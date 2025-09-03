@@ -23,7 +23,7 @@ export default function Login() {
   //look for values on our url bar
   const email = searchParams.get("email");
   const token = searchParams.get("token");
-  // console.log({ email, token });
+
 
   const [isVisible, setIsVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
@@ -39,12 +39,11 @@ export default function Login() {
     mutationFn: resetPassword,
     onSuccess: (response) => {
       //what you want to do if api call is a success.
-      // console.log(response);
       toast.success(response?.data?.message);
       navigate("/account/signin");
     },
     onError: (error) => {
-      console.log(error);
+      import.meta.env.DEV && console.log(error);
       setError(error?.response?.data?.message);
     },
   });

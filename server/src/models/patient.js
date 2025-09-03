@@ -1,4 +1,4 @@
- import mongoose, { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 const patientSchema = new Schema(
   {
@@ -27,6 +27,7 @@ const patientSchema = new Schema(
     phone: {
       type: String,
       required: [true, "Phone number is required"],
+      unique: true,
     },
     address: {
       type: String,
@@ -71,7 +72,6 @@ const patientSchema = new Schema(
 
 patientSchema.index({ fullname: 1 });
 patientSchema.index({ dateOfBirth: 1 });
-patientSchema.index({ phone: 1 });
 patientSchema.index({ address: 1 });
 patientSchema.index({ gender: 1 });
 patientSchema.index({ bloodGroup: 1 });

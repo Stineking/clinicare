@@ -13,7 +13,11 @@ import {
   uploadAvatar,
   updateUserPassword,
   updateUser,
-  deleteAccount
+  deleteAccount,
+  getAllUsers,
+  deleteAccountAdmins,
+  updateUserRole,
+  createUserAdmins,
 } from "../controllers/userController.js";
 import { validateFormData } from "../middlewares/validateForm.js";
 import {
@@ -23,9 +27,10 @@ import {
   forgotPasswordSchema,
   validateResetPasswordSchema,
   updatePasswordSchema,
-  validateUserSchema
+  validateUserSchema,
+  validateUpdateUserRoleSchema,
 } from "../utils/dataSchema.js";
-import { verifyAuth } from "../middlewares/authenticate.js";
+import { verifyAuth, authorizedRoles } from "../middlewares/authenticate.js";
 import { rateLimiter, refreshTokenLimit } from "../middlewares/rateLimit.js";
 import { cacheMiddleware, clearCache } from "../middlewares/cache.js";
 
@@ -110,4 +115,36 @@ router.delete(
   deleteAccount
 );
 
+router.get(
+  "/all",
+  verifyAuth,
+  cacheMiddleware("users", 3600),
+  getAllUsers
+);
+
+router.delete(
+  "/:id/delete-account",
+  verifyAuth,
+  authorizedRoles("admin"),
+  clearCache("users"),
+  deleteAccountAdmins
+);
+
+router.patch(
+  "/:id/update",
+  verifyAuth,
+  authorizedRoles("admin"),
+  validateFormData(validateUpdateUserRoleSchema),
+  clearCache("users"),
+  updateUserRole
+);
+
+router.post(
+  "/create-user",
+  verifyAuth,
+  authorizedRoles("admin"),
+  validateFormData(validateSignUpSchema),
+  clearCache("users"),
+  createUserAdmins
+);
 export default router;
