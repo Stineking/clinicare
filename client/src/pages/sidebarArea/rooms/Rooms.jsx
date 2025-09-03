@@ -15,11 +15,11 @@ import Paginate from "@/components/Paginate";
 import useMetaArgs from "@/hooks/useMeta";
 
 export default function Rooms() {
-    useMetaArgs({
-      title: "Rooms - Clinicare",
-      description: "Clinicare account - Rooms",
-      keywords: "Clinicare, management, rooms",
-    });
+  useMetaArgs({
+    title: "Rooms - Clinicare",
+    description: "Clinicare account - Rooms",
+    keywords: "Clinicare, management, rooms",
+  });
 
   const { accessToken } = useAuth();
   const [searchParams] = useSearchParams();
@@ -70,24 +70,16 @@ export default function Rooms() {
             <ErrorAlert error={error?.response?.data?.message} />
           ) : (
             <>
-              {rooms?.length > 0 ? (
-                <>
-                  <Suspense fallback={<SkeletonTable />}>
-                    <Table rooms={rooms} />
-                  </Suspense>
-                  <Paginate
-                    totalPages={totalPages}
-                    hasMore={hasMore}
-                    handlePageChange={handlePageChange}
-                    currentPage={currentPage}
-                    // limit={pageLimit}
-                  />
-                </>
-              ) : (
-                <p className="mt-6  font-semibold text-center">
-                  No rooms found
-                </p>
-              )}
+              <Suspense fallback={<SkeletonTable />}>
+                <Table rooms={rooms} />
+              </Suspense>
+              <Paginate
+                totalPages={totalPages}
+                hasMore={hasMore}
+                handlePageChange={handlePageChange}
+                currentPage={currentPage}
+                // limit={pageLimit}
+              />
             </>
           )}
         </>

@@ -14,11 +14,11 @@ import React, { Suspense } from "react";
 import { useSearchParams } from "react-router";
 
 export default function Doctors() {
-    useMetaArgs({
-      title: "Doctors - Clinicare",
-      description: "Clinicare account - Doctors",
-      keywords: "Clinicare, medical, doctors",
-    });
+  useMetaArgs({
+    title: "Doctors - Clinicare",
+    description: "Clinicare account - Doctors",
+    keywords: "Clinicare, medical, doctors",
+  });
 
   const { accessToken } = useAuth();
   const [searchParams] = useSearchParams();
@@ -75,24 +75,16 @@ export default function Doctors() {
             <ErrorAlert error={error?.response?.data?.message} />
           ) : (
             <>
-              {doctors?.length > 0 ? (
-                <>
-                  <Suspense fallback={<SkeletonTable />}>
-                    <Table doctors={doctors} />
-                  </Suspense>
-                  <Paginate
-                    totalPages={totalPages}
-                    hasMore={hasMore}
-                    handlePageChange={handlePageChange}
-                    currentPage={currentPage}
-                    // limit={pageLimit}
-                  />
-                </>
-              ) : (
-                <p className="mt-6  font-semibold text-center">
-                  No doctors found
-                </p>
-              )}
+              <Suspense fallback={<SkeletonTable />}>
+                <Table doctors={doctors} />
+              </Suspense>
+              <Paginate
+                totalPages={totalPages}
+                hasMore={hasMore}
+                handlePageChange={handlePageChange}
+                currentPage={currentPage}
+                // limit={pageLimit}
+              />
             </>
           )}
         </>

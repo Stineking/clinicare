@@ -15,11 +15,11 @@ import { useSearchParams } from "react-router";
 const Table = lazy(() => import("@/features/patients/Table"));
 
 export default function Patients() {
-    useMetaArgs({
-      title: "Patients - Clinicare",
-      description: "Clinicare account - Patients",
-      keywords: "Clinicare, Users, patients",
-    });
+  useMetaArgs({
+    title: "Patients - Clinicare",
+    description: "Clinicare account - Patients",
+    keywords: "Clinicare, Users, patients",
+  });
 
   const { accessToken } = useAuth();
   const [searchParams] = useSearchParams();
@@ -34,7 +34,6 @@ export default function Patients() {
   });
 
   const patients = data?.data?.data?.patients || [];
-
 
   const {
     handlePageChange,
@@ -68,24 +67,16 @@ export default function Patients() {
             <ErrorAlert error={error?.response?.data?.message} />
           ) : (
             <>
-              {patients?.length > 0 ? (
-                <>
-                  <Suspense fallback={<SkeletonTable />}>
-                    <Table patients={patients} />
-                  </Suspense>
-                  <Paginate
-                    totalPages={totalPages}
-                    hasMore={hasMore}
-                    handlePageChange={handlePageChange}
-                    currentPage={currentPage}
-                    // limit={pageLimit}
-                  />
-                </>
-              ) : (
-                <p className="mt-6  font-semibold text-center">
-                  No patients found
-                </p>
-              )}
+              <Suspense fallback={<SkeletonTable />}>
+                <Table patients={patients} />
+              </Suspense>
+              <Paginate
+                totalPages={totalPages}
+                hasMore={hasMore}
+                handlePageChange={handlePageChange}
+                currentPage={currentPage}
+                // limit={pageLimit}
+              />
             </>
           )}
         </>

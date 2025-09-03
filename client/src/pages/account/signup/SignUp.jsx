@@ -146,7 +146,7 @@ export default function SignUp() {
           <p className="text-center text-[13px] text-zinc-600">
             Already have an account?{" "}
             <Link className="text-blue-500 font-bold" to="/account/signin">
-              Login
+              Sign In
             </Link>
           </p>
         </form>
