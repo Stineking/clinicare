@@ -34,6 +34,7 @@ export default function PatientOnboard() {
     id: value,
   }));
 
+  
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -95,7 +96,7 @@ export default function PatientOnboard() {
     } else {
       setCurrentStep(currentStep - 1);
     }
-  };
+  };  
 
   const mutation = useMutation({
     mutationFn: registerPatient,
@@ -104,6 +105,7 @@ export default function PatientOnboard() {
         toast.success(response?.data?.message);
         //clear. old user data
         queryClient.invalidateQueries({ queryKey: ["auth_user"] });
+        setCurrentStep(3);
       }
     },
     onError: (error) => {
@@ -303,7 +305,7 @@ export default function PatientOnboard() {
                       <input
                         type="text"
                         className="input text-xs w-full"
-                        placeholder="Emergency contact"
+                        placeholder="Emergency contact name"
                         {...register("emergencyContact")}
                       />
                     </fieldset>

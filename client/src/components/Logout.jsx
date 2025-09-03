@@ -21,7 +21,7 @@ export default function Logout() {
       QueryClient.clear();
       setIsOpen(false);
       setAccessToken(null);
-      navigate("/account/signin");
+      navigate("/account/signin", { replace: true });
     },
     onError: (error) => {
       toast.error(error?.response?.data?.message, { id: "logout" });

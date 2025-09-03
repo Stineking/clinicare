@@ -42,10 +42,8 @@ export default function Login() {
       toast.success(response?.data?.message || "Login successful");
       setAccessToken(response?.data?.data?.accessToken);
       //save access token tolocal storage
-      if (!user?.isVerified) {
+      if (user &&!user?.isVerified) {
         navigate("/verify-account");
-      } else {
-        navigate("/dashboard");
       }
     },
     onError: (error) => {

@@ -30,7 +30,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:4800"], // allow request from Client address
+    origin: [
+      "http://localhost:4800",
+      "https://clinicare-clientcode.vercel.app",
+    ], // allow request from Client address
     credentials: true, //allow cookies to be sent with requests
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"], //permitted http methods
     optionsSuccessStatus: 200, //default status

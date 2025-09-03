@@ -184,11 +184,7 @@ export default function VerifyOtp() {
                 Did not receive a code? or Code expired?
               </p>
               <button
-                className={`btn bg-blue-500 mt-1 hover:bg-blue-600 font-bold rounded-sm ${
-                  isResendDisabled
-                    ? "text-black cursor-not-allowed"
-                    : "text-white"
-                }`}
+                className="btn bg-blue-500 mt-1 hover:bg-blue-600 font-bold text-white rounded-sm"
                 isdisabled={isResendDisabled}
                 onClick={handleResendCode}
               >
