@@ -20,7 +20,7 @@ export default function Rooms() {
     description: "Clinicare account - Rooms",
     keywords: "Clinicare, management, rooms",
   });
-
+// next
   const { accessToken } = useAuth();
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
