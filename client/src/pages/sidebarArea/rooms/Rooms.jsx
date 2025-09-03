@@ -8,11 +8,11 @@ import { useQuery } from "@tanstack/react-query";
 import React, { Suspense } from "react";
 import { useSearchParams } from "react-router";
 import usePaginate from "@/hooks/usePaginate";
-import ErrorAlert from "@/components/ErrorAlert";
 import { SkeletonTable } from "@/components/LazyLoader";
 import Table from "@/features/rooms/Table";
 import Paginate from "@/components/Paginate";
 import useMetaArgs from "@/hooks/useMeta";
+import ErrorAlert from "@/components/ErrorAlert";
 
 export default function Rooms() {
   useMetaArgs({
