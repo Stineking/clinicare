@@ -5,12 +5,13 @@ import { useAuth } from "@/store";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
 import { lazy, Suspense } from "react";
-import ErrorAlert from "@/components/ErrorAlert";
 import Filter from "@/features/payments/Filter";
 import Search from "@/components/Search";
 import { SkeletonTable } from "@/components/LazyLoader";
 import Paginate from "@/components/Paginate";
+import ErrorAlert from "@/components/ErrorAlert";
 const Table = lazy(() => import("@/features/payments/PaymentsTable"));
+
 
 export default function PatientPayments() {
   const { accessToken, user } = useAuth();

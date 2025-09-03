@@ -1,5 +1,4 @@
 import { getAllAppointments } from "@/api/appointment";
-import ErrorAlert from "@/components/ErrorAlert";
 import { SkeletonTable } from "@/components/LazyLoader";
 import PageWrapper from "@/components/PageWrapper";
 import Paginate from "@/components/Paginate";
@@ -11,6 +10,7 @@ import usePaginate from "@/hooks/usePaginate";
 import { useAuth } from "@/store";
 import { useQuery } from "@tanstack/react-query";
 import React, { Suspense } from "react";
+import ErrorAlert from "@/components/ErrorAlert";
 import { useSearchParams } from "react-router";
 
 export default function Appointments() {

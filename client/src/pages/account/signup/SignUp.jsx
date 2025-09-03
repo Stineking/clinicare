@@ -8,8 +8,8 @@ import useMetaArgs from "@/hooks/useMeta";
 import { registerUser } from "@/api/auth";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import ErrorAlert from "@/components/ErrorAlert";
 import { useAuth } from "@/store";
+import ErrorAlert from "@/components/ErrorAlert";
 
 //use mutation to handle form submission
 export default function SignUp() {
