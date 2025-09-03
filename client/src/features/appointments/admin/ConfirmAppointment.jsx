@@ -1,5 +1,5 @@
 import { getAppointmentMeta, updateAppointmentStatus } from "@/api/appointment";
-import ErrorAlert from "@/components/errorAlert";
+import ErrorAlert from "@/components/ErrorAlert";
 import Modal from "@/components/Modal";
 import { useAuth } from "@/store";
 import { validateConfirmAppointmentSchema } from "@/utils/dataSchema";

@@ -1,5 +1,5 @@
 import { createRoom } from "@/api/room";
-import ErrorAlert from "@/components/errorAlert";
+import ErrorAlert from "@/components/ErrorAlert";
 import Modal from "@/components/Modal";
 import { useAuth } from "@/store";
 import { validateRoomSchema } from "@/utils/dataSchema";

@@ -8,7 +8,7 @@ import useMetaArgs from "@/hooks/useMeta";
 import { loginUser } from "@/api/auth";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import ErrorAlert from "@/components/errorAlert";
+import ErrorAlert from "@/components/ErrorAlert";
 import { useAuth } from "@/store";
 
 export default function Login() {

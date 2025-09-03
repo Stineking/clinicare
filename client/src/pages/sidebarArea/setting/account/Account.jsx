@@ -1,5 +1,5 @@
 import { updateUserProfile } from "@/api/auth";
-import ErrorAlert from "@/components/errorAlert";
+import ErrorAlert from "@/components/ErrorAlert";
 import DeleteAccount from "@/features/settings/DeleteAccount";
 import UploadImage from "@/features/settings/UploadImage";
 import useMetaArgs from "@/hooks/useMeta";

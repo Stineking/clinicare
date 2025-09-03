@@ -1,5 +1,5 @@
 import { getPatientsAppointment } from "@/api/appointment";
-import ErrorAlert from "@/components/errorAlert";
+import ErrorAlert from "@/components/ErrorAlert";
 import { SkeletonTable } from "@/components/LazyLoader";
 import PageWrapper from "@/components/PageWrapper";
 import Paginate from "@/components/Paginate";

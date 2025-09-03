@@ -1,5 +1,5 @@
 import { updatePatientsAppointment } from "@/api/appointment";
-import ErrorAlert from "@/components/errorAlert";
+import ErrorAlert from "@/components/ErrorAlert";
 import Modal from "@/components/Modal";
 import { useAuth } from "@/store";
 import { formatDate } from "@/utils/constants";

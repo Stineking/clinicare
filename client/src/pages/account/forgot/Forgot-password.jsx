@@ -1,5 +1,5 @@
 import { forgotPassword } from "@/api/auth";
-import ErrorAlert from "@/components/errorAlert";
+import ErrorAlert from "@/components/ErrorAlert";
 import useMetaArgs from "@/hooks/useMeta";
 import { forgotPasswordSchema } from "@/utils/dataSchema";
 import { zodResolver } from "@hookform/resolvers/zod";

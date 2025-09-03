@@ -1,5 +1,5 @@
 import { updateUserRole } from "@/api/auth";
-import ErrorAlert from "@/components/errorAlert";
+import ErrorAlert from "@/components/ErrorAlert";
 import Modal from "@/components/Modal";
 import { useAuth } from "@/store";
 import { validateUpdateUserRoleSchema } from "@/utils/dataSchema";
