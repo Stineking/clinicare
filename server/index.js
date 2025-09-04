@@ -33,6 +33,7 @@ app.use(
     origin: [
       "http://localhost:4800",
       "https://clinicare-clients.vercel.app",
+      "https://clinicare-client-sable.vercel.app"
     ], // allow request from Client address
     credentials: true, //allow cookies to be sent with requests
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"], //permitted http methods
