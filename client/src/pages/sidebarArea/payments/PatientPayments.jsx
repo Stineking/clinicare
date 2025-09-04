@@ -12,6 +12,7 @@ import Paginate from "@/components/Paginate";
 import ErrorAlert from "@/components/ErrorAlert";
 const Table = lazy(() => import("@/features/payments/PaymentsTable"));
 
+//ll
 
 export default function PatientPayments() {
   const { accessToken, user } = useAuth();
