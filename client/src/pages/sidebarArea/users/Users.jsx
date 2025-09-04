@@ -1,5 +1,5 @@
 import { getAllUsers } from "@/api/auth";
-import ErrorAlert from "@/components/ErrorAlert";
+import ErrorAlert from "@/components/ErrorAlertPg";
 import { SkeletonCard } from "@/components/LazyLoader";
 import PageWrapper from "@/components/PageWrapper";
 import Paginate from "@/components/Paginate";

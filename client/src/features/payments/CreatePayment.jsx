@@ -1,6 +1,6 @@
 import { getAppointmentMeta } from "@/api/appointment";
 import { createPayment } from "@/api/payments";
-import ErrorAlert from "@/components/ErrorAlert";
+import ErrorAlert from "@/components/ErrorAlertPg";
 import Modal from "@/components/Modal";
 import { useAuth } from "@/store";
 import { formatCurrency } from "@/utils/constants";

@@ -1,5 +1,5 @@
 import { logout, updateUserPassword } from "@/api/auth";
-import ErrorAlert from "@/components/ErrorAlert";
+import ErrorAlert from "@/components/ErrorAlertPg";
 import useMetaArgs from "@/hooks/useMeta";
 import { useAuth } from "@/store";
 import { updatePasswordSchema } from "@/utils/dataSchema";

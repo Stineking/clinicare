@@ -1,5 +1,5 @@
 import { getAllStats, getPatientStats } from "@/api/dashboard";
-import ErrorAlert from "@/components/ErrorAlert";
+import ErrorAlert from "@/components/ErrorAlertPg";
 import { LazyLoader } from "@/components/LazyLoader";
 import PageWrapper from "@/components/PageWrapper";
 import ProgressCardAppointment from "@/features/dashboard/ProgressCardAppointment";

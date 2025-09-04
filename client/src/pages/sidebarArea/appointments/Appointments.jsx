@@ -10,7 +10,7 @@ import usePaginate from "@/hooks/usePaginate";
 import { useAuth } from "@/store";
 import { useQuery } from "@tanstack/react-query";
 import React, { Suspense } from "react";
-import ErrorAlert from "@/components/ErrorAlert";
+import ErrorAlert from "@/components/ErrorAlertPg";
 import { useSearchParams } from "react-router";
 
 export default function Appointments() {

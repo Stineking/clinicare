@@ -1,6 +1,6 @@
 import { getAppointmentMeta } from "@/api/appointment";
 import { updateInpatient } from "@/api/inpatients";
-import ErrorAlert from "@/components/ErrorAlert";
+import ErrorAlert from "@/components/ErrorAlertPg";
 import Modal from "@/components/Modal";
 import { useAuth } from "@/store";
 import { formatCurrency, formatDate } from "@/utils/constants";

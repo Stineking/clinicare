@@ -1,5 +1,5 @@
 import { uploadAvatar } from "@/api/auth";
-import ErrorAlert from "@/components/ErrorAlert";
+import ErrorAlert from "@/components/ErrorAlertPg";
 import { useFile } from "@/hooks/useFile";
 import { useAuth } from "@/store";
 import { RiCloseFill } from "@remixicon/react";

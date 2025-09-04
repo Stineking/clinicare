@@ -9,7 +9,7 @@ import Filter from "@/features/payments/Filter";
 import Search from "@/components/Search";
 import { SkeletonTable } from "@/components/LazyLoader";
 import Paginate from "@/components/Paginate";
-import ErrorAlert from "@/components/ErrorAlert";
+import ErrorAlert from "@/components/ErrorAlertPg";
 const Table = lazy(() => import("@/features/payments/PaymentsTable"));
 
 //ll

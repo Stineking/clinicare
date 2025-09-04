@@ -7,7 +7,7 @@ import usePaginate from "@/hooks/usePaginate";
 import { useAuth } from "@/store";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
-import ErrorAlert from "@/components/ErrorAlert";
+import ErrorAlert from "@/components/ErrorAlertPg";
 import { lazy, Suspense } from "react";
 import { SkeletonTable } from "@/components/LazyLoader";
 import Paginate from "@/components/Paginate";

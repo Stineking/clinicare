@@ -1,5 +1,5 @@
 import { getPatient, updatePatient } from "@/api/patients";
-import ErrorAlert from "@/components/ErrorAlert";
+import ErrorAlert from "@/components/ErrorAlertPg";
 import { LazyLoader } from "@/components/LazyLoader";
 import useMetaArgs from "@/hooks/useMeta";
 import { useAuth } from "@/store";

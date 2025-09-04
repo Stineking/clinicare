@@ -9,7 +9,7 @@ import { registerUser } from "@/api/auth";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuth } from "@/store";
-import ErrorAlert from "@/components/ErrorAlert";
+import ErrorAlert from "@/components/ErrorAlertPg";
 
 //use mutation to handle form submission
 export default function SignUp() {

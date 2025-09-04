@@ -1,5 +1,5 @@
 import { registerPatient } from "@/api/patients";
-import ErrorAlert from "@/components/ErrorAlert";
+import ErrorAlert from "@/components/ErrorAlertPg";
 import useMetaArgs from "@/hooks/useMeta";
 import { useAuth } from "@/store";
 import { bloodGroup, formatDate } from "@/utils/constants";
