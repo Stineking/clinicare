@@ -14,6 +14,7 @@ export default function ErrorAlert({ error }) {
       navigate(0);
     }
   }, [error, msgs, navigate]);
+
   return (
     <>
       {!msgs.includes(error) && (
