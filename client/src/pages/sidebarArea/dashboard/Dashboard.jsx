@@ -6,7 +6,7 @@ import ProgressCardAppointment from "@/features/dashboard/ProgressCardAppointmen
 import ProgressCardPayment from "@/features/dashboard/ProgressCardPayments";
 import RecentAppointments from "@/features/dashboard/RecentAppointments";
 import RecentPayments from "@/features/dashboard/RecentPayments";
-import StatsCard from "@/features/dashboard/StatsCard";
+import StatsCard from "@/features/dashboard/Statscard";
 import { useAuth } from "@/store";
 import { formatCurrency } from "@/utils/constants";
 import { RiCalendarScheduleLine, RiLineChartLine } from "@remixicon/react";
