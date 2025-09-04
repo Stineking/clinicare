@@ -12,7 +12,6 @@ import { SkeletonTable } from "@/components/LazyLoader";
 import Table from "@/features/rooms/Table";
 import Paginate from "@/components/Paginate";
 import useMetaArgs from "@/hooks/useMeta";
-import ErrorAlert from "@/components/ErrorAlert";
 //ll
 export default function Rooms() {
   useMetaArgs({
